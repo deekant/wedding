@@ -3,6 +3,10 @@ import IntroSection from './components/IntroSection'
 import GallerySection from './components/GallerySection'
 import LocationSection from './components/LocationSection'
 import TimelineSection from './components/TimelineSection'
+import WearSection from './components/WearSection'
+import StripSection from './components/StripSection'
+import GiftSection from './components/GiftSection'
+import CTASection from './components/CTASection'
 
 export default function Home() {
   return (
@@ -12,6 +16,10 @@ export default function Home() {
       <GallerySection />
       <LocationSection />
       <TimelineSection />
+      <WearSection />
+      <StripSection />
+      <GiftSection />
+      <CTASection />
     </main>
   )
 }

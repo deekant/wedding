@@ -29,7 +29,7 @@ export default function RootLayout({
       lang="en"
       className={`${gildaDisplay.variable} ${inter.variable} antialiased`}
     >
-      <body>
+      <body suppressHydrationWarning>
         <SmoothScroll />
         {children}
       </body>

@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 
-
 const EVENTS = [
   {
     time: '15:00',
@@ -48,53 +47,71 @@ const STACK = [
 ]
 
 export default function TimelineSection() {
-  const titleRef  = useRef<HTMLHeadingElement>(null)
-  const stageRef  = useRef<HTMLDivElement>(null)
-  const cardRefs        = useRef<(HTMLDivElement | null)[]>([])
-  const textPanelRefs   = useRef<(HTMLDivElement | null)[]>([])
+  const titleRef       = useRef<HTMLHeadingElement>(null)
+  const stageRef       = useRef<HTMLDivElement>(null)
+  const deckWrapperRef = useRef<HTMLDivElement>(null)
+  const cardRefs       = useRef<(HTMLDivElement | null)[]>([])
+  const textPanelRefs  = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
-    const title = titleRef.current
-    const stage = stageRef.current
-    if (!stage) return
+    const title       = titleRef.current
+    const stage       = stageRef.current
+    const deckWrapper = deckWrapperRef.current
+    if (!stage || !title || !deckWrapper) return
 
     const cards  = cardRefs.current.filter(Boolean)  as HTMLDivElement[]
     const panels = textPanelRefs.current.filter(Boolean) as HTMLDivElement[]
     if (cards.length !== EVENTS.length || panels.length !== EVENTS.length) return
 
-    let blurTween: gsap.core.Tween | null = null
-    if (title) {
-      blurTween = gsap.fromTo(title,
-        { filter: 'blur(8px)' },
-        { filter: 'blur(0px)', ease: 'none', scrollTrigger: { trigger: title, start: 'top 85%', end: 'top 25%', scrub: 1.2 } }
-      )
-    }
-
     cards.forEach((card, i) => {
       gsap.set(card, { ...STACK[i], zIndex: EVENTS.length - i })
     })
 
-    // Text column is height:0; yPercent:-50 centers each absolute panel on the flex row midline
+    // deck-wrapper uses align-items:center; text-col is height:0 so its midpoint
+    // sits at the flex cross-axis center (= card vertical center).
+    // yPercent:-50 shifts each panel up by its own half-height, centering it there.
     panels.forEach((panel, i) => {
       gsap.set(panel, {
         yPercent: -50,
-        y:        i === 0 ? 0 : 60,
-        opacity:  i === 0 ? 1 : 0,
+        y:       i === 0 ? 0 : 60,
+        opacity: i === 0 ? 1 : 0,
       })
     })
 
+    // Slot 0: title exits. Slots 1..N: card shuffles.
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: stage,
         pin: true,
         start: 'top top',
-        end: `+=${(EVENTS.length - 1) * 900}`,
+        end: `+=${EVENTS.length * 900}`,
         scrub: 1.5,
       },
     })
 
+    // How far to translate the deck-wrapper so the deck centers in the viewport
+    // once the title has gone. Measured relative to the stage so scroll position
+    // at mount doesn't affect the calculation.
+    const stageRect = stage.getBoundingClientRect()
+    const deckEl    = cards[0].parentElement as HTMLElement
+    const deckRect  = deckEl.getBoundingClientRect()
+    const deckCenterInStage = (deckRect.top - stageRect.top) + deckRect.height / 2
+    const deckTranslateY    = window.innerHeight / 2 - deckCenterInStage  // negative = move up
+
+    // Title slides up; deck-wrapper simultaneously rises to viewport center
+    tl.fromTo(title,
+      { y: 0, opacity: 1 },
+      { y: -80, opacity: 0, duration: 1, ease: 'power2.in' },
+      0,
+    )
+    tl.fromTo(deckWrapper,
+      { y: 0 },
+      { y: deckTranslateY, duration: 1, ease: 'power2.inOut' },
+      0,
+    )
+
     for (let i = 0; i < EVENTS.length - 1; i++) {
-      const t = i
+      const t = i + 1  // shifted by 1 to make room for title exit
 
       // Active card exits — throws upper-left with rotation
       tl.fromTo(cards[i],
@@ -134,22 +151,24 @@ export default function TimelineSection() {
       )
     }
 
-    return () => {
-      blurTween?.kill()
-      tl.kill()
-    }
+    // Blur-in as section scrolls into view, before pin activates
+    const blurTween = gsap.fromTo(title,
+      { filter: 'blur(8px)' },
+      { filter: 'blur(0px)', ease: 'none',
+        scrollTrigger: { trigger: title, start: 'top 85%', end: 'top 30%', scrub: 1.2 } }
+    )
+
+    return () => { tl.kill(); blurTween.kill() }
   }, [])
 
   return (
     <section className="timeline">
-      <div className="timeline__header">
+      <div ref={stageRef} className="timeline__stage">
         <h2 ref={titleRef} className="timeline__title">
           The day, from<br />the beginning
         </h2>
-      </div>
 
-      <div ref={stageRef} className="timeline__stage">
-        <div className="timeline__deck-wrapper">
+        <div ref={deckWrapperRef} className="timeline__deck-wrapper">
           <div className="timeline__deck">
             {EVENTS.map((event, i) => (
               <div

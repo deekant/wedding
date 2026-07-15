@@ -17,6 +17,7 @@ export default function SmoothScroll() {
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     })
+    ;(window as any).__lenis = lenis
 
     // Block scroll until hero animation signals completion
     lenis.stop()

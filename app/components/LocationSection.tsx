@@ -178,7 +178,7 @@ export default function LocationSection() {
       <div ref={stageRef} className="location__stage">
         <div ref={compositionRef} className="location__composition">
           <div className="location__col location__col--left">
-            <div className="location__col-img"><Image src="/location-01.jpg" alt="" fill className="object-cover" sizes="25vw" loading="lazy" /></div>
+            <div className="location__col-img"><Image src="/location-03.jpg" alt="" fill className="object-cover" sizes="25vw" loading="lazy" /></div>
             <div className="location__col-img"><Image src="/location-02.jpg" alt="" fill className="object-cover" sizes="25vw" loading="lazy" /></div>
           </div>
           <div ref={centerImgRef} className="location__center-img">

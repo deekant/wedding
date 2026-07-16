@@ -21,8 +21,8 @@ const GIFTS = [
   },
   {
     title: 'A Gift for Animals',
-    desc: 'Donate to an animal shelter, or send food and supplies to one you follow.',
-    link: { label: 'SEE SHELTERS', href: '#' },
+    desc: 'Donate to an animal shelter, or send food.',
+    link: { label: 'SEE SHELTERS', href: 'https://www.wishlistr.com/chychyk/', btn: true },
   },
   {
     title: 'A Contribution',
@@ -77,9 +77,18 @@ export default function GiftSection() {
                   <p className="gift__item-desc">{g.desc}</p>
                 </div>
                 {g.link && (
-                  <a href={g.link.href} className="gift__link" target="_blank" rel="noopener noreferrer">
-                    <span>{g.link.label}</span>
-                  </a>
+                  g.link.btn ? (
+                    <a href={g.link.href} className="gift__btn" target="_blank" rel="noopener noreferrer">
+                      <span className="btn-label-wrap">
+                        <span className="btn-label">{g.link.label}</span>
+                        <span className="btn-label btn-label--alt">{g.link.label}</span>
+                      </span>
+                    </a>
+                  ) : (
+                    <a href={g.link.href} className="gift__link" target="_blank" rel="noopener noreferrer">
+                      <span>{g.link.label}</span>
+                    </a>
+                  )
                 )}
               </li>
             ))}

@@ -776,6 +776,30 @@ body {
   white-space: nowrap;
 }
 
+.gift__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 28px;
+  height: 52px;
+  flex-shrink: 0;
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  background: linear-gradient(120deg, #100802 0%, #100802 30%, #555555 50%, #100802 70%, #100802 100%);
+  background-size: 400%;
+  animation: glade 3s infinite;
+  font-family: var(--font-inter);
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.gift__btn:hover .btn-label { transform: translateY(-100%); }
+.gift__btn:hover .btn-label--alt { transform: translateY(0%); }
+
 /* ── CTA ───────────────────────────────────────────────────── */
 /* Cream section padding creates the gap around the dark scene — GSAP animates from 0 to 40px */
 .cta {

@@ -35,7 +35,7 @@ export default function NavBar() {
   }
 
   return (
-    <nav ref={navRef} className="nav" aria-label="Site navigation">
+    <nav ref={navRef} className="nav" style={{ transform: 'translateY(-100%)' }} aria-label="Site navigation">
       <div className="nav__left">
         <span className="nav__date">14 / 09 / 26</span>
         <a

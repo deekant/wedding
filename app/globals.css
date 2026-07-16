@@ -1050,7 +1050,6 @@ input[type="number"].cta__input::-webkit-outer-spin-button {
   z-index: 100;
   display: flex;
   align-items: center;
-  transform: translateY(-100%); /* GSAP animates in */
   gap: 16px;
   padding: 20px 40px;
   mix-blend-mode: difference;

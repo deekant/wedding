@@ -176,7 +176,7 @@ export default function TimelineSection() {
                 ref={el => { cardRefs.current[i] = el }}
                 className="timeline__card"
               >
-                <Image src={event.image} alt={event.title} fill className="object-cover" priority={i === 0} />
+                <Image src={event.image} alt={event.title} fill className="object-cover" sizes="(max-width: 768px) 80vw, 30vw" loading="lazy" />
               </div>
             ))}
           </div>

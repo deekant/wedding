@@ -177,15 +177,15 @@ export default function LocationSection() {
       <div ref={stageRef} className="location__stage">
         <div ref={compositionRef} className="location__composition">
           <div className="location__col location__col--left">
-            <div className="location__col-img"><Image src="/location-01.jpg" alt="" fill className="object-cover" /></div>
-            <div className="location__col-img"><Image src="/location-02.jpg" alt="" fill className="object-cover" /></div>
+            <div className="location__col-img"><Image src="/location-01.jpg" alt="" fill className="object-cover" sizes="25vw" loading="lazy" /></div>
+            <div className="location__col-img"><Image src="/location-02.jpg" alt="" fill className="object-cover" sizes="25vw" loading="lazy" /></div>
           </div>
           <div ref={centerImgRef} className="location__center-img">
-            <Image src="/location-03.jpg" alt="" fill className="object-cover" priority />
+            <Image src="/location-03.jpg" alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
           </div>
           <div className="location__col location__col--right">
-            <div className="location__col-img"><Image src="/location-04.jpg" alt="" fill className="object-cover" /></div>
-            <div className="location__col-img"><Image src="/location-05.jpg" alt="" fill className="object-cover" /></div>
+            <div className="location__col-img"><Image src="/location-04.jpg" alt="" fill className="object-cover" sizes="25vw" loading="lazy" /></div>
+            <div className="location__col-img"><Image src="/location-05.jpg" alt="" fill className="object-cover" sizes="25vw" loading="lazy" /></div>
           </div>
         </div>
 
@@ -196,7 +196,7 @@ export default function LocationSection() {
         <div ref={overlayRef} className="location__overlay">
           {SLIDES.map((src, i) => (
             <div key={src} ref={el => { slideRefs.current[i] = el }} className="location__slide">
-              <Image src={src} alt="" fill className="object-cover" />
+              <Image src={src} alt="" fill className="object-cover" sizes="100vw" loading="lazy" />
             </div>
           ))}
         </div>

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { createPortal } from 'react-dom'
+import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Fireworks from './Fireworks'
@@ -67,8 +68,7 @@ export default function CTASection() {
   return (
     <section ref={sectionRef} className="cta">
       <div className="cta__scene">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/cta-bg.jpg" alt="" className="cta__scene-bg" />
+        <Image src="/cta-bg.jpg" alt="" fill className="cta__scene-bg" style={{ objectFit: 'cover' }} sizes="100vw" />
         <div className="cta__scene-overlay" />
 
         <div ref={cardRef} className="cta__card">

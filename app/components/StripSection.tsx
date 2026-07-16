@@ -18,8 +18,7 @@ export default function StripSection() {
     <section className="strip">
       <div className="strip__track">
         {doubled.map((src, i) => (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img key={i} src={src} alt="" className="strip__img" />
+          <img key={i} src={src} alt="" className="strip__img" loading="lazy" decoding="async" />
         ))}
       </div>
     </section>

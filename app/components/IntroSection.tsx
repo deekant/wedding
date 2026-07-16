@@ -55,10 +55,16 @@ export default function IntroSection() {
             We can&#39;t wait to celebrate this beautiful day surrounded by the people we love most
           </p>
 
-          <p className="intro__subtext">We can&#39;t wait to see you in Warsaw this September!</p>
+          <p className="intro__subtext">Join us for an evening of vows, dinner, and dancing above it all.</p>
         </div>
 
-        <button className="intro__cta">
+        <button
+          className="intro__cta"
+          onClick={() => {
+            const cta = document.querySelector('.cta')
+            ;(window as any).__lenis?.scrollTo(cta)
+          }}
+        >
           <span className="intro__cta-label">RSVP BY 15 AUGUST, 2026</span>
         </button>
       </div>

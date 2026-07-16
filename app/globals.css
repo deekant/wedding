@@ -155,7 +155,7 @@ body {
 
 .intro__quote {
   font-family: var(--font-gilda);
-  font-size: clamp(36px, 5.5vw, 72px);
+  font-size: 72px;
   color: #100802;
   text-transform: uppercase;
   text-align: center;
@@ -171,22 +171,27 @@ body {
 }
 
 .intro__cta {
-  background: #100802;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px 40px;
-  width: 300px;
   cursor: pointer;
   border: none;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(120deg, #100802 0%, #100802 30%, #555555 50%, #100802 70%, #100802 100%);
+  background-size: 400%;
+  animation: glade 3s infinite;
 }
 
 .intro__cta-label {
   font-family: var(--font-inter);
-  font-size: 16px;
+  font-size: 14px;
   color: #fff;
   white-space: nowrap;
   letter-spacing: 0.05em;
+  font-weight: 500;
+  
 }
 
 /* ── Gallery ───────────────────────────────────────────────── */
@@ -295,7 +300,7 @@ body {
 
 .location__title {
   font-family: var(--font-gilda);
-  font-size: clamp(36px, 4.5vw, 72px);
+  font-size: 72px;
   color: #100802;
   text-transform: uppercase;
   text-align: center;
@@ -405,7 +410,7 @@ body {
 .timeline__title {
   flex-shrink: 0;
   font-family: var(--font-gilda);
-  font-size: clamp(40px, 5.5vw, 80px);
+  font-size: 72px;
   color: #fff;
   text-transform: uppercase;
   letter-spacing: -0.04em;
@@ -421,7 +426,7 @@ body {
   flex-direction: column;
   align-items: center;
   padding-top: clamp(160px, 20vh, 200px);
-  gap: clamp(40px, 6vh, 80px);
+  gap: clamp(80px, 12vh, 120px);
 }
 
 .timeline__deck-wrapper {
@@ -502,7 +507,7 @@ body {
 
 .wear__title {
   font-family: var(--font-gilda);
-  font-size: clamp(60px, 7vw, 100px);
+  font-size: 72px;
   color: #100802;
   text-transform: uppercase;
   letter-spacing: -0.04em;
@@ -600,8 +605,8 @@ body {
 }
 
 .strip__img {
-  height: 70vh;
-  width: calc(70vh * 2 / 3);
+  height: 75vh;
+  width: calc(75vh * 2 / 3);
   object-fit: cover;
   flex-shrink: 0;
   display: block;
@@ -621,7 +626,7 @@ body {
 
 .gift__title {
   font-family: var(--font-gilda);
-  font-size: clamp(60px, 7vw, 100px);
+  font-size: 72px;
   color: #100802;
   text-transform: uppercase;
   letter-spacing: -0.04em;
@@ -686,7 +691,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 0;
+  padding: 2px 0;
   border-bottom: 1px solid #100802;
   text-decoration: none;
   flex-shrink: 0;
@@ -702,16 +707,20 @@ body {
 }
 
 /* ── CTA ───────────────────────────────────────────────────── */
-/* Cream section padding creates the 40px gap around the dark scene */
+/* Cream section padding creates the gap around the dark scene — GSAP animates from 0 to 40px */
 .cta {
   background: #F5F2ED;
-  padding: 40px;
+  min-height: 100vh;
 }
 
 .cta__scene {
   position: relative;
-  padding: 160px 80px;
+  min-height: 100vh;
+  padding: 120px 80px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cta__scene-bg {
@@ -733,12 +742,13 @@ body {
   position: relative;
   z-index: 1;
   background: #F5F2ED;
+  width: 100%;
   max-width: 720px;
   margin: 0 auto;
-  padding: 64px;
+  padding: 56px;
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  gap: 48px;
   opacity: 0; /* GSAP animates in */
 }
 
@@ -752,7 +762,7 @@ body {
 
 .cta__title {
   font-family: var(--font-gilda);
-  font-size: clamp(28px, 3vw, 40px);
+  font-size: 40px;
   color: #100802;
   text-transform: uppercase;
   letter-spacing: -0.04em;
@@ -761,7 +771,7 @@ body {
 
 .cta__subtitle {
   font-family: var(--font-inter);
-  font-size: 18px;
+  font-size: 16px;
   color: #100802;
   line-height: 1.5;
 }
@@ -775,16 +785,16 @@ body {
 .cta__field {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 4px;
   position: relative;
 }
 
 .cta__label {
   font-family: var(--font-inter);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   color: #100802;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
@@ -811,10 +821,34 @@ body {
   color: #100802;
   outline: none;
   padding: 0;
+  transition: border-color 0.3s ease;
 }
 
-.cta__input::placeholder {
+.cta__input:hover,
+.cta__input:focus,
+.cta__textarea:hover,
+.cta__textarea:focus {
+  border-bottom-color: rgba(16, 8, 2, 1);
+}
+
+.cta__input::placeholder,
+.cta__textarea::placeholder {
   color: rgba(16, 8, 2, 0.5);
+}
+
+.cta__textarea {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid rgba(16, 8, 2, 0.3);
+  background: transparent;
+  font-family: var(--font-inter);
+  font-size: 16px;
+  color: #100802;
+  outline: none;
+  padding: 12px 0;
+  resize: none;
+  line-height: 1.5;
+  transition: border-color 0.3s ease;
 }
 
 input[type="number"].cta__input::-webkit-inner-spin-button,
@@ -836,7 +870,11 @@ input[type="number"].cta__input::-webkit-outer-spin-button {
   font-size: 16px;
   color: #100802;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: border-color 0.3s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.cta__attend-btn:hover {
+  border-color: rgba(16, 8, 2, 1);
 }
 
 .cta__attend-btn--active {
@@ -848,12 +886,58 @@ input[type="number"].cta__input::-webkit-outer-spin-button {
 .cta__submit {
   width: 100%;
   height: 65px;
-  background: #100802;
   border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    120deg,
+    #100802 0%,
+    #100802 30%,
+    #555555 50%,
+    #100802 70%,
+    #100802 100%
+  );
+  background-size: 400%;
+  animation: glade 5s infinite;
   font-family: var(--font-inter);
-  font-size: 16px;
+  font-size: 14px;
   color: #fff;
   letter-spacing: 0.05em;
-  cursor: pointer;
   text-transform: uppercase;
+  font-weight: 500;
 }
+
+@keyframes glade {
+  from { background-position: 100% 100%; }
+}
+
+/* ── CTA success state ──────────────────────────────────────── */
+.cta__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+  padding: 40px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta__success-title {
+  font-family: var(--font-gilda);
+  font-size: 40px;
+  color: #100802;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.cta__success-text {
+  font-family: var(--font-inter);
+  font-size: 16px;
+  color: #100802;
+  max-width: 500px;
+  line-height: 1.5;
+}
+
+

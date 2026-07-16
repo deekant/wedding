@@ -65,7 +65,10 @@ export default function IntroSection() {
             ;(window as any).__lenis?.scrollTo(cta)
           }}
         >
-          <span className="intro__cta-label">RSVP BY 15 AUGUST, 2026</span>
+          <span className="btn-label-wrap intro__cta-label">
+            <span className="btn-label">RSVP BY 15 AUGUST, 2026</span>
+            <span className="btn-label btn-label--alt">RSVP BY 15 AUGUST, 2026</span>
+          </span>
         </button>
       </div>
     </section>

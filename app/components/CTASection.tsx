@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { createPortal } from 'react-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -10,11 +10,29 @@ export default function CTASection() {
   const [attending, setAttending] = useState<'yes' | 'no' | null>('yes')
   const [guests, setGuests]       = useState(1)
   const [submitted, setSubmitted] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-  const cardRef    = useRef<HTMLDivElement>(null)
+  const sectionRef    = useRef<HTMLElement>(null)
+  const cardRef       = useRef<HTMLDivElement>(null)
+  const fromHeightRef = useRef<number | null>(null)
+
+  // Capture height before re-render, animate after
+  const captureHeight = () => {
+    fromHeightRef.current = cardRef.current?.getBoundingClientRect().height ?? null
+  }
+
+  useLayoutEffect(() => {
+    const card = cardRef.current
+    const from = fromHeightRef.current
+    if (!card || from === null) return
+    fromHeightRef.current = null
+
+    gsap.fromTo(card,
+      { height: from },
+      { height: card.scrollHeight, duration: 0.5, ease: 'power2.inOut',
+        onComplete: () => gsap.set(card, { clearProps: 'height' }) }
+    )
+  }, [attending, submitted])
 
   useEffect(() => {
-    const tweens: gsap.core.Tween[] = []
     const section = sectionRef.current
     const card    = cardRef.current
     if (!section || !card) return
@@ -31,17 +49,18 @@ export default function CTASection() {
       onLeaveBack:  () => gsap.to(section, { padding: 0,  duration: 0.6, ease: 'power2.in'  }),
     })
 
-    tweens.push(gsap.fromTo(card,
+    const fadeTween = gsap.fromTo(card,
       { y: 60, opacity: 0 },
       { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
         scrollTrigger: { trigger: card, start: 'top 85%' } }
-    ))
+    )
 
-    return () => { st.kill(); tweens.forEach(t => t.kill()) }
+    return () => { st.kill(); fadeTween.kill() }
   }, [])
 
-const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    captureHeight()
     setSubmitted(true)
   }
 
@@ -65,6 +84,16 @@ const handleSubmit = (e: React.FormEvent) => {
                   ? 'Your RSVP is in — we\'re so excited you\'ll be with us. September 14th can\'t come soon enough. Get ready for a beautiful day!'
                   : 'Thank you for letting us know. Even from afar, you\'ll be in our hearts on the day. We hope our paths cross again soon.'}
               </p>
+              {attending === 'yes' && (
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cta__success-link"
+                >
+                  JOIN TELEGRAM GROUP
+                </a>
+              )}
             </div>
           ) : (
             <>
@@ -78,7 +107,7 @@ const handleSubmit = (e: React.FormEvent) => {
               <form className="cta__form" onSubmit={handleSubmit}>
                 <div className="cta__field">
                   <label className="cta__label">Full name</label>
-                  <input className="cta__input" type="text" />
+                  <input className="cta__input" type="text" required />
                 </div>
 
                 <div className="cta__field">
@@ -87,14 +116,14 @@ const handleSubmit = (e: React.FormEvent) => {
                     <button
                       type="button"
                       className={`cta__attend-btn${attending === 'yes' ? ' cta__attend-btn--active' : ''}`}
-                      onClick={() => setAttending('yes')}
+                      onClick={() => { captureHeight(); setAttending('yes') }}
                     >
                       I will come
                     </button>
                     <button
                       type="button"
                       className={`cta__attend-btn${attending === 'no' ? ' cta__attend-btn--active' : ''}`}
-                      onClick={() => setAttending('no')}
+                      onClick={() => { captureHeight(); setAttending('no') }}
                     >
                       I can&rsquo;t come
                     </button>
@@ -141,7 +170,10 @@ const handleSubmit = (e: React.FormEvent) => {
 
                 {attending !== null && (
                   <button type="submit" className="cta__submit">
-                    SEND RSVP
+                    <span className="btn-label-wrap">
+                      <span className="btn-label">SEND RSVP</span>
+                      <span className="btn-label btn-label--alt">SEND RSVP</span>
+                    </span>
                   </button>
                 )}
               </form>

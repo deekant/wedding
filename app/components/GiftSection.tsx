@@ -17,7 +17,7 @@ const GIFTS = [
   {
     title: 'A Flower Subscription',
     desc: 'Fresh flowers for our new home, on repeat.',
-    link: { label: 'ORDER HERE', href: '#' },
+    link: { label: 'ORDER HERE', href: 'https://www.instagram.com/reel/DaLFEP4MSDv/?igsh=Z3VzZ3liZnNocWJs' },
   },
   {
     title: 'A Contribution',
@@ -74,9 +74,6 @@ export default function GiftSection() {
                 {g.link && (
                   <a href={g.link.href} className="gift__link" target="_blank" rel="noopener noreferrer">
                     <span>{g.link.label}</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path d="M3 13L13 3M13 3H7M13 3V9" stroke="#100802" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
                   </a>
                 )}
               </li>

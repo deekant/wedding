@@ -1,3 +1,4 @@
+import NavBar from './components/NavBar'
 import HeroIntro from './components/HeroIntro'
 import IntroSection from './components/IntroSection'
 import GallerySection from './components/GallerySection'
@@ -11,6 +12,7 @@ import CTASection from './components/CTASection'
 export default function Home() {
   return (
     <main>
+      <NavBar />
       <HeroIntro />
       <IntroSection />
       <GallerySection />

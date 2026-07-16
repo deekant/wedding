@@ -156,6 +156,22 @@ export default function LocationSection() {
         </div>
         <h2 ref={titleRef} className="location__title">We&#39;ll see you at Cicha 23</h2>
         <p className="location__address">ul. Cicha 23, 05-260 Marki, Warsaw area, Poland</p>
+        <a
+          href="https://maps.app.goo.gl/VR67EL9vxRoVgBXQA"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="location__map-btn"
+        >
+          <span className="btn-label-wrap">
+            <span className="btn-label">OPEN IN GOOGLE MAPS</span>
+            <span className="btn-label btn-label--alt">OPEN IN GOOGLE MAPS</span>
+          </span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+            <path d="M6.41667 2.33325H1.75V12.2499H11.6667V7.58325" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square"/>
+            <path d="M8.75004 1.75H12.25V5.25M11.9584 2.04167L6.70837 7.29167" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square"/>
+          </svg>
+
+        </a>
       </div>
 
       <div ref={stageRef} className="location__stage">

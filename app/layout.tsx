@@ -29,6 +29,9 @@ export default function RootLayout({
       lang="en"
       className={`${gildaDisplay.variable} ${inter.variable} antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `history.scrollRestoration='manual';window.scrollTo(0,0);` }} />
+      </head>
       <body suppressHydrationWarning>
         <SmoothScroll />
         {children}

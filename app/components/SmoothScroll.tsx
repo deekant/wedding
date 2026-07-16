@@ -19,9 +19,11 @@ export default function SmoothScroll() {
     })
     ;(window as any).__lenis = lenis
 
-    // Block scroll until hero animation signals completion
+    // Block scroll until hero animation signals completion (5s failsafe)
     lenis.stop()
-    const onHeroComplete = () => lenis.start()
+    const startLenis = () => { lenis.start(); ScrollTrigger.refresh() }
+    const failsafe = setTimeout(startLenis, 5000)
+    const onHeroComplete = () => { clearTimeout(failsafe); startLenis() }
     window.addEventListener('hero:complete', onHeroComplete, { once: true })
 
     // Keep ScrollTrigger in sync with Lenis scroll position
@@ -32,6 +34,7 @@ export default function SmoothScroll() {
     gsap.ticker.lagSmoothing(0)
 
     return () => {
+      clearTimeout(failsafe)
       window.removeEventListener('hero:complete', onHeroComplete)
       lenis.destroy()
       gsap.ticker.remove(ticker)

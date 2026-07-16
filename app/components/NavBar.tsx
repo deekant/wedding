@@ -15,7 +15,8 @@ export default function NavBar() {
 
     const hero = document.querySelector('.hero')
     const pastHero = hero ? hero.getBoundingClientRect().bottom <= 0 : false
-    gsap.set(nav, { yPercent: pastHero ? 0 : -100 })
+    gsap.set(nav, { clearProps: 'transform' })
+    gsap.set(nav, { yPercent: pastHero ? 0 : -100, opacity: 1 })
 
     let ready = false
     const showTrigger = ScrollTrigger.create({
@@ -35,7 +36,7 @@ export default function NavBar() {
   }
 
   return (
-    <nav ref={navRef} className="nav" style={{ transform: 'translateY(-100%)' }} aria-label="Site navigation">
+    <nav ref={navRef} className="nav" aria-label="Site navigation">
       <div className="nav__left">
         <span className="nav__date">14 / 09 / 26</span>
         <a

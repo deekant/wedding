@@ -1053,6 +1053,7 @@ input[type="number"].cta__input::-webkit-outer-spin-button {
   gap: 16px;
   padding: 20px 40px;
   mix-blend-mode: difference;
+  opacity: 0; /* GSAP owns visibility — prevents SSR flash */
 }
 
 .nav__left {

@@ -20,6 +20,11 @@ const GIFTS = [
     link: { label: 'ORDER HERE', href: 'https://www.instagram.com/reel/DaLFEP4MSDv/?igsh=Z3VzZ3liZnNocWJs' },
   },
   {
+    title: 'A Gift for Animals',
+    desc: 'Donate to an animal shelter, or send food and supplies to one you follow.',
+    link: { label: 'SEE SHELTERS', href: '#' },
+  },
+  {
     title: 'A Contribution',
     desc: 'Monetary gifts are welcome too, with our thanks.',
     link: null,

@@ -12,7 +12,7 @@ const SLIDES = [
   '/location-05.jpg',
 ]
 
-const CENTER_INDEX = 2  // location-03 is the composition's center image
+const CENTER_INDEX = 0  // location-01 is the composition's center image
 const ZOOM_SCROLL  = 2500
 
 export default function LocationSection() {
@@ -31,9 +31,11 @@ export default function LocationSection() {
 
   const [active, setActive]             = useState(CENTER_INDEX)
   const [hoveredArrow, setHoveredArrow] = useState<'prev' | 'next' | null>(null)
+  const autoRotateRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // Arrow clicks: cycle through slides, no scroll needed
+  // Arrow clicks: stop auto-rotate and cycle slides
   const goTo = useCallback((dir: 1 | -1) => {
+    if (autoRotateRef.current) { clearInterval(autoRotateRef.current); autoRotateRef.current = null }
     setActive(prev => (prev + dir + SLIDES.length) % SLIDES.length)
   }, [])
 
@@ -100,7 +102,6 @@ export default function LocationSection() {
     gsap.set([prev, next], { opacity: 0, y: 16, pointerEvents: 'none' })
 
     let fullyZoomed = false
-    let autoRotate: ReturnType<typeof setInterval> | null = null
 
     // Zoom completes at this progress fraction of the total pin
     const ZOOM_DONE = ZOOM_SCROLL / (ZOOM_SCROLL + DWELL_SCROLL)
@@ -119,8 +120,8 @@ export default function LocationSection() {
             gsap.to(border, { boxShadow: 'inset 0 0 0 40px #F5F2ED', duration: 0.7, ease: 'power3.out' })
             gsap.to(overlay, { opacity: 1, duration: 0.5, ease: 'power2.out' })
             gsap.to([prev, next], { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', pointerEvents: 'auto' })
-            // Auto-rotate every 2.5s
-            autoRotate = setInterval(() => {
+            // Auto-rotate every 2.5s (stopped permanently when user clicks an arrow)
+            autoRotateRef.current = setInterval(() => {
               setActive(prev => (prev + 1) % SLIDES.length)
             }, 2500)
           } else if (self.progress < ZOOM_DONE - 0.06 && fullyZoomed) {
@@ -128,7 +129,7 @@ export default function LocationSection() {
             gsap.to(border, { boxShadow: 'inset 0 0 0 0px #F5F2ED', duration: 0.3 })
             gsap.to(overlay, { opacity: 0, duration: 0.3 })
             gsap.to([prev, next], { opacity: 0, y: 16, duration: 0.3, pointerEvents: 'none' })
-            if (autoRotate) { clearInterval(autoRotate); autoRotate = null }
+            if (autoRotateRef.current) { clearInterval(autoRotateRef.current); autoRotateRef.current = null }
             setActive(CENTER_INDEX)
           }
         },
@@ -142,7 +143,7 @@ export default function LocationSection() {
 
     return () => {
       tl.kill()
-      if (autoRotate) clearInterval(autoRotate)
+      if (autoRotateRef.current) clearInterval(autoRotateRef.current)
     }
   }, [])
 
@@ -181,7 +182,7 @@ export default function LocationSection() {
             <div className="location__col-img"><Image src="/location-02.jpg" alt="" fill className="object-cover" sizes="25vw" loading="lazy" /></div>
           </div>
           <div ref={centerImgRef} className="location__center-img">
-            <Image src="/location-03.jpg" alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+            <Image src="/location-01.jpg" alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
           </div>
           <div className="location__col location__col--right">
             <div className="location__col-img"><Image src="/location-04.jpg" alt="" fill className="object-cover" sizes="25vw" loading="lazy" /></div>

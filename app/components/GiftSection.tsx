@@ -90,7 +90,6 @@ export default function GiftSection() {
             className="gift__btn"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ marginTop: 40 }}
           >
             <span className="btn-label-wrap">
               <span className="btn-label">VIEW OUR WISHLIST</span>

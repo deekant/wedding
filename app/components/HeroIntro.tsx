@@ -10,7 +10,7 @@ const IMAGES = [
   '/loader-02.jpg',
   '/loader-03.jpg',
   '/loader-04.jpg',
-  '/loader-05.jpeg',
+  '/loader-05.jpg',
 ]
 
 const FRAME_W = 384

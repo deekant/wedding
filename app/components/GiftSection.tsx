@@ -22,7 +22,7 @@ const GIFTS = [
   {
     title: 'A Gift for Animals',
     desc: 'Donate to an animal shelter, or send food.',
-    link: { label: 'SEE SHELTERS', href: 'https://www.wishlistr.com/chychyk/', btn: true },
+    link: { label: 'SEE SHELTERS', href: '#' },
   },
   {
     title: 'A Contribution',
@@ -77,22 +77,26 @@ export default function GiftSection() {
                   <p className="gift__item-desc">{g.desc}</p>
                 </div>
                 {g.link && (
-                  g.link.btn ? (
-                    <a href={g.link.href} className="gift__btn" target="_blank" rel="noopener noreferrer">
-                      <span className="btn-label-wrap">
-                        <span className="btn-label">{g.link.label}</span>
-                        <span className="btn-label btn-label--alt">{g.link.label}</span>
-                      </span>
-                    </a>
-                  ) : (
-                    <a href={g.link.href} className="gift__link" target="_blank" rel="noopener noreferrer">
-                      <span>{g.link.label}</span>
-                    </a>
-                  )
+                  <a href={g.link.href} className="gift__link" target="_blank" rel="noopener noreferrer">
+                    <span>{g.link.label}</span>
+                  </a>
                 )}
               </li>
             ))}
           </ul>
+
+          <a
+            href="https://www.wishlistr.com/chychyk/"
+            className="gift__btn"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ marginTop: 40 }}
+          >
+            <span className="btn-label-wrap">
+              <span className="btn-label">VIEW OUR WISHLIST</span>
+              <span className="btn-label btn-label--alt">VIEW OUR WISHLIST</span>
+            </span>
+          </a>
         </div>
       </div>
     </section>

@@ -132,8 +132,8 @@ export default function CTASection() {
 
               <form className="cta__form" onSubmit={handleSubmit}>
                 <div className="cta__field">
-                  <label className="cta__label">Full name</label>
-                  <input ref={nameRef} className="cta__input" type="text" required />
+                  <label htmlFor="rsvp-name" className="cta__label">Full name</label>
+                  <input ref={nameRef} id="rsvp-name" className="cta__input" type="text" required />
                 </div>
 
                 <div className="cta__field">
@@ -159,10 +159,11 @@ export default function CTASection() {
                 {attending === 'yes' && (
                   <>
                     <div className="cta__field">
-                      <label className="cta__label">
+                      <label htmlFor="rsvp-guests" className="cta__label">
                         Number of Guests <span className="cta__label-sub">(including you)</span>
                       </label>
                       <input
+                        id="rsvp-guests"
                         className="cta__input"
                         type="number"
                         min={1}
@@ -172,25 +173,25 @@ export default function CTASection() {
                     </div>
 
                     <div className="cta__field">
-                      <label className="cta__label">Dietary Restrictions <span className="cta__label-sub">(optional)</span></label>
-                      <input ref={dietaryRef} className="cta__input" type="text" placeholder="Vegetarian, allergies..." />
+                      <label htmlFor="rsvp-dietary" className="cta__label">Dietary Restrictions <span className="cta__label-sub">(optional)</span></label>
+                      <input ref={dietaryRef} id="rsvp-dietary" className="cta__input" type="text" placeholder="Vegetarian, allergies..." />
                     </div>
 
                     <div className="cta__field">
-                      <label className="cta__label">
+                      <label htmlFor="rsvp-telegram" className="cta__label">
                         Telegram Username <span className="cta__label-sub">(for the guest group)</span>
                       </label>
-                      <input ref={telegramRef} className="cta__input" type="text" placeholder="@yournickname" />
+                      <input ref={telegramRef} id="rsvp-telegram" className="cta__input" type="text" placeholder="@yournickname" />
                     </div>
                   </>
                 )}
 
                 {attending !== null && (
                   <div className="cta__field">
-                    <label className="cta__label">
+                    <label htmlFor="rsvp-note" className="cta__label">
                       A note for us <span className="cta__label-sub">(optional)</span>
                     </label>
-                    <textarea ref={noteRef} className="cta__textarea" placeholder="Leave a note or well wishes" rows={4} />
+                    <textarea ref={noteRef} id="rsvp-note" className="cta__textarea" placeholder="Leave a note or well wishes" rows={4} />
                   </div>
                 )}
 

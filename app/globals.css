@@ -179,10 +179,16 @@ body {
   border: none;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(120deg, #100802 0%, #100802 30%, #555555 50%, #100802 70%, #100802 100%);
-  background-size: 400%;
-  animation: glade 3s infinite;
+  background: #100802;
   height: 65px;
+}
+.intro__cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, transparent 30%, #555555 50%, transparent 70%);
+  animation: glade 3s linear infinite;
 }
 
 .intro__cta-label {
@@ -786,15 +792,21 @@ body {
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;
-  background: linear-gradient(120deg, #100802 0%, #100802 30%, #555555 50%, #100802 70%, #100802 100%);
-  background-size: 400%;
-  animation: glade 3s infinite;
+  background: #100802;
   font-family: var(--font-inter);
   font-size: 13px;
   font-weight: 500;
   color: #fff;
   letter-spacing: 0.05em;
   white-space: nowrap;
+}
+.gift__btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, transparent 30%, #555555 50%, transparent 70%);
+  animation: glade 3s linear infinite;
 }
 
 .gift__btn:hover .btn-label { transform: translateY(-100%); }
@@ -986,16 +998,7 @@ input[type="number"].cta__input::-webkit-outer-spin-button {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(
-    120deg,
-    #100802 0%,
-    #100802 30%,
-    #555555 50%,
-    #100802 70%,
-    #100802 100%
-  );
-  background-size: 400%;
-  animation: glade 5s infinite;
+  background: #100802;
   font-family: var(--font-inter);
   font-size: 14px;
   color: #fff;
@@ -1004,8 +1007,18 @@ input[type="number"].cta__input::-webkit-outer-spin-button {
   font-weight: 500;
 }
 
+.cta__submit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, transparent 30%, #555555 50%, transparent 70%);
+  animation: glade 5s linear infinite;
+}
+
 @keyframes glade {
-  from { background-position: 100% 100%; }
+  from { transform: translateX(-200%); }
+  to   { transform: translateX(200%); }
 }
 
 /* ── CTA success state ──────────────────────────────────────── */

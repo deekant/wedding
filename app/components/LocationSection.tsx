@@ -217,7 +217,7 @@ export default function LocationSection() {
         <div ref={overlayRef} className="location__overlay">
           {SLIDES.map((src, i) => (
             <div key={src} ref={el => { slideRefs.current[i] = el }} className="location__slide">
-              <Image src={src} alt="" fill className="object-cover" sizes="100vw" loading="lazy" />
+              <Image src={src} alt="" fill className="object-cover" sizes="(min-width: 1200px) 1200px, 100vw" loading="lazy" />
             </div>
           ))}
         </div>

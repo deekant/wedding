@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 
 const GIFTS = [
@@ -17,12 +17,12 @@ const GIFTS = [
   {
     title: 'A Flower Subscription',
     desc: 'Fresh flowers for our new home, on repeat.',
-    link: { label: 'ORDER HERE', href: 'https://www.instagram.com/reel/DaLFEP4MSDv/?igsh=Z3VzZ3liZnNocWJs' },
+    link: { label: 'ORDER HERE', href: 'https://www.instagram.com/reel/DaLFEP4MSDv/?igsh=Z3VzZ3liZnNocWJs', modal: false },
   },
   {
     title: 'A Gift for Animals',
     desc: 'Donate to an animal shelter, or send food.',
-    link: { label: 'SEE SHELTERS', href: '#' },
+    link: { label: 'VIEW SHELTERS', href: null, modal: true },
   },
   {
     title: 'A Contribution',
@@ -31,9 +31,17 @@ const GIFTS = [
   },
 ]
 
+const SHELTERS = [
+  { name: 'koshkinn___dom',         href: 'https://www.instagram.com/koshkinn___dom/' },
+  { name: 'wildanimals.ua',         href: 'https://www.instagram.com/wildanimals.ua/' },
+  { name: 'patron.center',          href: 'https://www.instagram.com/patron.center/' },
+  { name: 'snizhana_zahist_tvarin', href: 'https://www.instagram.com/snizhana_zahist_tvarin/' },
+]
+
 export default function GiftSection() {
   const titleRef   = useRef<HTMLHeadingElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
+  const [shelterOpen, setShelterOpen] = useState(false)
 
   useEffect(() => {
     const tweens: gsap.core.Tween[] = []
@@ -57,6 +65,11 @@ export default function GiftSection() {
     return () => { tweens.forEach(t => t.kill()) }
   }, [])
 
+  useEffect(() => {
+    document.body.style.overflow = shelterOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [shelterOpen])
+
   return (
     <section className="gift">
       <div className="container gift__inner">
@@ -77,9 +90,15 @@ export default function GiftSection() {
                   <p className="gift__item-desc">{g.desc}</p>
                 </div>
                 {g.link && (
-                  <a href={g.link.href} className="gift__link" target="_blank" rel="noopener noreferrer">
-                    <span>{g.link.label}</span>
-                  </a>
+                  g.link.modal ? (
+                    <button onClick={() => setShelterOpen(true)} className="gift__link">
+                      <span>{g.link.label}</span>
+                    </button>
+                  ) : (
+                    <a href={g.link.href!} className="gift__link" target="_blank" rel="noopener noreferrer">
+                      <span>{g.link.label}</span>
+                    </a>
+                  )
                 )}
               </li>
             ))}
@@ -96,6 +115,40 @@ export default function GiftSection() {
               <span className="btn-label btn-label--alt">VIEW OUR WISHLIST</span>
             </span>
           </a>
+        </div>
+      </div>
+
+      <div
+        className={`shelter-overlay${shelterOpen ? ' shelter-overlay--open' : ''}`}
+        onClick={() => setShelterOpen(false)}
+      >
+        <div className="shelter-modal" onClick={e => e.stopPropagation()}>
+            <button
+              className="shelter-modal__close"
+              onClick={() => setShelterOpen(false)}
+              aria-label="Close"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 1l12 12M13 1L1 13" stroke="#100802" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            </button>
+
+            <p className="shelter-modal__title">Some shelters we follow and support</p>
+
+            <ul className="shelter-modal__list">
+              {SHELTERS.map(s => (
+                <li key={s.name} className="shelter-modal__item">
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shelter-modal__link"
+                  >
+                    {s.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
         </div>
       </div>
     </section>

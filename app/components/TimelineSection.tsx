@@ -63,6 +63,20 @@ export default function TimelineSection() {
     const panels = textPanelRefs.current.filter(Boolean) as HTMLDivElement[]
     if (cards.length !== EVENTS.length || panels.length !== EVENTS.length) return
 
+    // Blur-in as section scrolls into view, before pin activates
+    const blurTween = gsap.fromTo(title,
+      { filter: 'blur(8px)' },
+      { filter: 'blur(0px)', ease: 'none',
+        scrollTrigger: { trigger: title, start: 'top 85%', end: 'top 30%', scrub: 1.2 } }
+    )
+
+    if (window.innerWidth < 768) {
+      // Clear any inline GSAP styles so CSS can control the mobile layout
+      cards.forEach((card, i) => gsap.set(card, { clearProps: 'all' }))
+      panels.forEach(panel => gsap.set(panel, { clearProps: 'all' }))
+      return () => { blurTween.kill() }
+    }
+
     cards.forEach((card, i) => {
       gsap.set(card, { ...STACK[i], zIndex: EVENTS.length - i })
     })
@@ -150,13 +164,6 @@ export default function TimelineSection() {
         t + 0.28,
       )
     }
-
-    // Blur-in as section scrolls into view, before pin activates
-    const blurTween = gsap.fromTo(title,
-      { filter: 'blur(8px)' },
-      { filter: 'blur(0px)', ease: 'none',
-        scrollTrigger: { trigger: title, start: 'top 85%', end: 'top 30%', scrub: 1.2 } }
-    )
 
     return () => { tl.kill(); blurTween.kill() }
   }, [])

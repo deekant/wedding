@@ -7,15 +7,22 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Fireworks from './Fireworks'
 
+
 export default function CTASection() {
   const [attending, setAttending] = useState<'yes' | 'no' | null>('yes')
   const [guests, setGuests]       = useState(1)
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading]     = useState(false)
+
   const sectionRef    = useRef<HTMLElement>(null)
   const cardRef       = useRef<HTMLDivElement>(null)
   const fromHeightRef = useRef<number | null>(null)
 
-  // Capture height before re-render, animate after
+  const nameRef     = useRef<HTMLInputElement>(null)
+  const dietaryRef  = useRef<HTMLInputElement>(null)
+  const telegramRef = useRef<HTMLInputElement>(null)
+  const noteRef     = useRef<HTMLTextAreaElement>(null)
+
   const captureHeight = () => {
     fromHeightRef.current = cardRef.current?.getBoundingClientRect().height ?? null
   }
@@ -40,14 +47,15 @@ export default function CTASection() {
 
     gsap.set(section, { padding: 0 })
 
+    const pad = window.innerWidth >= 1200 ? 40 : window.innerWidth >= 768 ? 20 : 0
     const st = ScrollTrigger.create({
       trigger: section,
       start: 'top 90%',
       end: 'bottom 10%',
-      onEnter:      () => gsap.to(section, { padding: 40, duration: 0.8, ease: 'power2.out' }),
-      onLeave:      () => gsap.to(section, { padding: 0,  duration: 0.6, ease: 'power2.in'  }),
-      onEnterBack:  () => gsap.to(section, { padding: 40, duration: 0.8, ease: 'power2.out' }),
-      onLeaveBack:  () => gsap.to(section, { padding: 0,  duration: 0.6, ease: 'power2.in'  }),
+      onEnter:      () => gsap.to(section, { padding: pad, duration: 0.8, ease: 'power2.out' }),
+      onLeave:      () => gsap.to(section, { padding: 0,   duration: 0.6, ease: 'power2.in'  }),
+      onEnterBack:  () => gsap.to(section, { padding: pad, duration: 0.8, ease: 'power2.out' }),
+      onLeaveBack:  () => gsap.to(section, { padding: 0,   duration: 0.6, ease: 'power2.in'  }),
     })
 
     const fadeTween = gsap.fromTo(card,
@@ -59,9 +67,27 @@ export default function CTASection() {
     return () => { st.kill(); fadeTween.kill() }
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
+
+    const payload = {
+      name:      nameRef.current?.value ?? '',
+      attending: attending === 'yes' ? 'Yes' : 'No',
+      guests:    attending === 'yes' ? guests : '',
+      dietary:   attending === 'yes' ? (dietaryRef.current?.value ?? '') : '',
+      telegram:  attending === 'yes' ? (telegramRef.current?.value ?? '') : '',
+      note:      noteRef.current?.value ?? '',
+    }
+
+    fetch('/api/rsvp', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    }).catch(() => {})
+
     captureHeight()
+    setLoading(false)
     setSubmitted(true)
   }
 
@@ -86,7 +112,7 @@ export default function CTASection() {
               </p>
               {attending === 'yes' && (
                 <a
-                  href="#"
+                  href="https://t.me/+sPhvTO7UfwxlYjcy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="cta__success-link"
@@ -100,14 +126,14 @@ export default function CTASection() {
               <div className="cta__header">
                 <h2 className="cta__title">Will you join us?</h2>
                 <p className="cta__subtitle">
-                  Please let us know by 15 August 2026 so we can finalize seating and catering. We'd love to see you there!
+                  Please let us know by 15 August 2026 so we can finalize seating and catering. We&rsquo;d love to see you there!
                 </p>
               </div>
 
               <form className="cta__form" onSubmit={handleSubmit}>
                 <div className="cta__field">
                   <label className="cta__label">Full name</label>
-                  <input className="cta__input" type="text" required />
+                  <input ref={nameRef} className="cta__input" type="text" required />
                 </div>
 
                 <div className="cta__field">
@@ -147,14 +173,14 @@ export default function CTASection() {
 
                     <div className="cta__field">
                       <label className="cta__label">Dietary Restrictions <span className="cta__label-sub">(optional)</span></label>
-                      <input className="cta__input" type="text" placeholder="Vegetarian, allergies..." />
+                      <input ref={dietaryRef} className="cta__input" type="text" placeholder="Vegetarian, allergies..." />
                     </div>
 
                     <div className="cta__field">
                       <label className="cta__label">
                         Telegram Username <span className="cta__label-sub">(for the guest group)</span>
                       </label>
-                      <input className="cta__input" type="text" placeholder="@yournickname" />
+                      <input ref={telegramRef} className="cta__input" type="text" placeholder="@yournickname" />
                     </div>
                   </>
                 )}
@@ -164,15 +190,15 @@ export default function CTASection() {
                     <label className="cta__label">
                       A note for us <span className="cta__label-sub">(optional)</span>
                     </label>
-                    <textarea className="cta__textarea" placeholder="Leave a note or well wishes" rows={4} />
+                    <textarea ref={noteRef} className="cta__textarea" placeholder="Leave a note or well wishes" rows={4} />
                   </div>
                 )}
 
                 {attending !== null && (
-                  <button type="submit" className="cta__submit">
+                  <button type="submit" className="cta__submit" disabled={loading}>
                     <span className="btn-label-wrap">
-                      <span className="btn-label">SEND RSVP</span>
-                      <span className="btn-label btn-label--alt">SEND RSVP</span>
+                      <span className="btn-label">{loading ? 'SENDING…' : 'SEND RSVP'}</span>
+                      <span className="btn-label btn-label--alt">{loading ? 'SENDING…' : 'SEND RSVP'}</span>
                     </span>
                   </button>
                 )}

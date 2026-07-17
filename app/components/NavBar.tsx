@@ -40,7 +40,7 @@ export default function NavBar() {
       <div className="nav__left">
         <span className="nav__date">14 / 09 / 26</span>
         <a
-          className="nav__link"
+          className="nav__link nav__link--location"
           href="https://maps.app.goo.gl/VR67EL9vxRoVgBXQA"
           target="_blank"
           rel="noopener noreferrer"

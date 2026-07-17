@@ -12,26 +12,30 @@ export default function GallerySection() {
 
   useEffect(() => {
     const tweens: gsap.core.Tween[] = []
+    const isMobile = window.innerWidth < 768
+    const leftOffset  = isMobile ? 40  : 120
+    const colOffset   = isMobile ? 40  : 120
+    const rightOffset = isMobile ? 30  : 100
 
     if (leftImgRef.current) {
       tweens.push(gsap.fromTo(leftImgRef.current,
-        { y: 120 },
-        { y: -120, ease: 'none', scrollTrigger: { trigger: leftImgRef.current.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }
+        { y: leftOffset },
+        { y: -leftOffset, ease: 'none', scrollTrigger: { trigger: leftImgRef.current.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }
       ))
     }
 
     // Right column moves up faster than left (vertical offset on scroll)
     if (rightColRef.current) {
       tweens.push(gsap.fromTo(rightColRef.current,
-        { y: 120 },
-        { y: -120, ease: 'none', scrollTrigger: { trigger: rightColRef.current.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }
+        { y: colOffset },
+        { y: -colOffset, ease: 'none', scrollTrigger: { trigger: rightColRef.current.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }
       ))
     }
 
     if (rightImgRef.current) {
       tweens.push(gsap.fromTo(rightImgRef.current,
-        { y: 100 },
-        { y: -100, ease: 'none', scrollTrigger: { trigger: rightImgRef.current.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }
+        { y: rightOffset },
+        { y: -rightOffset, ease: 'none', scrollTrigger: { trigger: rightImgRef.current.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }
       ))
     }
 

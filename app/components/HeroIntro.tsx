@@ -39,13 +39,15 @@ export default function HeroIntro() {
 
     const vw = section.offsetWidth
     const vh = section.offsetHeight
-    const cx = vw / 2 - FRAME_W / 2
-    const cy = vh / 2 - FRAME_H / 2
+    const frameW = Math.min(FRAME_W, vw - 32)
+    const frameH = Math.round(FRAME_H * (frameW / FRAME_W))
+    const cx = vw / 2 - frameW / 2
+    const cy = vh / 2 - frameH / 2
 
     gsap.set(frames, {
       position: 'absolute',
-      width:    FRAME_W,
-      height:   FRAME_H,
+      width:    frameW,
+      height:   frameH,
       left:     cx,
       top:      cy,
       borderRadius: 3,

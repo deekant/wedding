@@ -31,7 +31,8 @@ export default function LocationSection() {
 
   const [active, setActive]             = useState(CENTER_INDEX)
   const [hoveredArrow, setHoveredArrow] = useState<'prev' | 'next' | null>(null)
-  const autoRotateRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const autoRotateRef  = useRef<ReturnType<typeof setInterval> | null>(null)
+  const touchStartRef  = useRef<number>(0)
 
   // Arrow clicks: stop auto-rotate and cycle slides
   const goTo = useCallback((dir: 1 | -1) => {
@@ -82,6 +83,17 @@ export default function LocationSection() {
     const prev        = prevRef.current
     const next        = nextRef.current
     if (!stage || !composition || !centerImg || !overlay || !border || !prev || !next) return
+
+    const isMobile = window.innerWidth < 768
+    if (isMobile) {
+      gsap.set(overlay, { opacity: 1 })
+      gsap.set(border, { boxShadow: 'inset 0 0 0 40px #F5F2ED' })
+      gsap.set([prev, next], { opacity: 1, y: 0, pointerEvents: 'auto' })
+      autoRotateRef.current = setInterval(() => {
+        setActive(prev => (prev + 1) % SLIDES.length)
+      }, 2500)
+      return () => { if (autoRotateRef.current) clearInterval(autoRotateRef.current) }
+    }
 
     const INSET      = 40
     const DWELL_SCROLL = 1500  // extra scroll distance to dwell in slider state
@@ -175,7 +187,15 @@ export default function LocationSection() {
         </a>
       </div>
 
-      <div ref={stageRef} className="location__stage">
+      <div
+        ref={stageRef}
+        className="location__stage"
+        onTouchStart={(e) => { touchStartRef.current = e.touches[0].clientX }}
+        onTouchEnd={(e) => {
+          const delta = touchStartRef.current - e.changedTouches[0].clientX
+          if (Math.abs(delta) > 40) goTo(delta > 0 ? 1 : -1)
+        }}
+      >
         <div ref={compositionRef} className="location__composition">
           <div className="location__col location__col--left">
             <div className="location__col-img"><Image src="/location-03.jpg" alt="" fill className="object-cover" sizes="25vw" loading="lazy" /></div>

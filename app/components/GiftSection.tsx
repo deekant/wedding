@@ -105,7 +105,7 @@ export default function GiftSection() {
           </ul>
 
           <a
-            href="https://www.wishlistr.com/chychyk/"
+            href="https://mywishlist.online/w/y0socm/mariyas-wishlist"
             className="gift__btn"
             target="_blank"
             rel="noopener noreferrer"

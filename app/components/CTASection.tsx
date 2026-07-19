@@ -10,7 +10,6 @@ import Fireworks from './Fireworks'
 
 export default function CTASection() {
   const [attending, setAttending] = useState<'yes' | 'no' | null>('yes')
-  const [guests, setGuests]       = useState(1)
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading]     = useState(false)
 
@@ -19,6 +18,7 @@ export default function CTASection() {
   const fromHeightRef = useRef<number | null>(null)
 
   const nameRef     = useRef<HTMLInputElement>(null)
+  const guestsRef   = useRef<HTMLInputElement>(null)
   const dietaryRef  = useRef<HTMLInputElement>(null)
   const telegramRef = useRef<HTMLInputElement>(null)
   const noteRef     = useRef<HTMLTextAreaElement>(null)
@@ -74,7 +74,7 @@ export default function CTASection() {
     const payload = {
       name:      nameRef.current?.value ?? '',
       attending: attending === 'yes' ? 'Yes' : 'No',
-      guests:    attending === 'yes' ? guests : '',
+      guests:    attending === 'yes' ? (parseInt(guestsRef.current?.value || '1') || 1) : '',
       dietary:   attending === 'yes' ? (dietaryRef.current?.value ?? '') : '',
       telegram:  attending === 'yes' ? (telegramRef.current?.value ?? '') : '',
       note:      noteRef.current?.value ?? '',
@@ -163,12 +163,12 @@ export default function CTASection() {
                         Number of Guests <span className="cta__label-sub">(including you)</span>
                       </label>
                       <input
+                        ref={guestsRef}
                         id="rsvp-guests"
                         className="cta__input"
                         type="number"
                         min={1}
-                        value={guests}
-                        onChange={e => setGuests(Math.max(1, parseInt(e.target.value) || 1))}
+                        defaultValue={1}
                       />
                     </div>
 
